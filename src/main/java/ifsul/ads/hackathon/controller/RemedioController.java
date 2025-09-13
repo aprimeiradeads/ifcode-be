@@ -41,5 +41,11 @@ public class RemedioController {
 		return ResponseEntity.ok(remedio);
 	}
 
-	
+	@DeleteMapping("/{remedioId}")
+	public ResponseEntity<String> deletarRemedio(@PathVariable UUID remedioId) {
+		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		remedioService.deletarRemedio(subject, remedioId);
+		return ResponseEntity.ok("Remédio deletado com sucesso!");
+	}
+
 }

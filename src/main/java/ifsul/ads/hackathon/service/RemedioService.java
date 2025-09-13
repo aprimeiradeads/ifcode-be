@@ -68,6 +68,11 @@ public class RemedioService {
                 .orElseThrow(() -> new IllegalArgumentException("Remédio não encontrado com ID: " + remedioId));
     }
 
+    public void deletarRemedio(String subject, UUID remedioId) {
+        Remedio remedio = obterRemedioPorId(subject, remedioId);
+        remedioRepository.delete(remedio);
+    }
+
     
 
 }
