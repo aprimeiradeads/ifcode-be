@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
                         // Libera o endpoint de login para qualquer requisição
-                        .requestMatchers("/api/auth/google").permitAll()
+                        .requestMatchers("/auth").permitAll()
                         // Garante que todas as outras rotas exigem autenticação
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
