@@ -8,6 +8,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
 import ifsul.ads.hackathon.domain.entity.Usuario;
+import ifsul.ads.hackathon.repository.UsuarioRepository;
 import ifsul.ads.hackathon.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import java.util.Date;
 @RestController
 public class AuthController {
 
+    private final UsuarioRepository usuarioRepository;
+
     @Value("${google.client.id}")
     private String googleClientId;
 
@@ -34,11 +37,16 @@ public class AuthController {
     @Autowired
     private UsuarioService usuarioService;
 
+    AuthController(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
     @PostMapping("/api/auth/google")
     public ResponseEntity<?> authenticateGoogleUser(@RequestBody String idTokenString) {
 
         // Passo 1: Validar o ID Token do Google
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance())
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(),
+                JacksonFactory.getDefaultInstance())
                 .setAudience(Collections.singletonList(googleClientId))
                 .build();
 
@@ -69,15 +77,19 @@ public class AuthController {
                     .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
                     .sign(algorithm);
 
-                    Usuario user = new Usuario();
-                    user.setId(googleId);
-                    user.setLogin(email);
-                    user.setNome(name);
-                    user.setCelular("00000000000");
-                    user.setSenha("Nullable");
+            Usuario user = new Usuario();
+            user.setId(googleId);
+            user.setLogin(email);
+            user.setNome(name);
+            user.setCelular("00000000000");
+            user.setSenha("Nullable");
 
-                    usuarioService.salvarUsuario(user);
-            
+            if (!usuarioRepository.existsByLogin(email)) {
+                usuarioService.salvarUsuario(user);
+            } else {
+                System.out.println("Usuário já existe no banco de dados.");
+            }
+
             return ResponseEntity.ok(Collections.singletonMap("token", yourApiJwt));
 
         } catch (GeneralSecurityException | IOException e) {
