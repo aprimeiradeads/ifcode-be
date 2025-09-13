@@ -42,7 +42,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Apenas a sua origem do front-end é permitida
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedOrigins(Arrays.asList("https://ifcode-fe.vercel.app:5173"));
         // Permite os métodos POST e OPTIONS
         configuration.setAllowedMethods(Arrays.asList("POST", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
