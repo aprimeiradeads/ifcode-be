@@ -24,18 +24,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(authorize -> authorize
-                        // Libera o endpoint de login para qualquer requisição
-                        .requestMatchers("/api/auth/google").permitAll()
-                        // Garante que todas as outras rotas exigem autenticação
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        ;
+    http
+        .csrf(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .authorizeHttpRequests(authorize -> authorize
+            .anyRequest().permitAll()) // Permite todas as requisições sem autenticação
+        ; // Remove o filtro JWT
 
-        return http.build();
+    return http.build();
     }
 
     @Bean

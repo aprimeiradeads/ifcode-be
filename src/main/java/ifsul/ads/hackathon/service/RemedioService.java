@@ -62,6 +62,12 @@ public class RemedioService {
         return remedioRepository.findByUsuarioId(usuarioId);
     }
 
+    public Remedio obterRemedioPorId(String usuarioId,UUID remedioId) {
+        return remedioRepository.findById(remedioId)
+                .filter(remedio -> remedio.getUsuario().getId().equals(usuarioId))
+                .orElseThrow(() -> new IllegalArgumentException("Remédio não encontrado com ID: " + remedioId));
+    }
+
     
 
 }

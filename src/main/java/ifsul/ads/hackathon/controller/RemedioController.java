@@ -5,6 +5,7 @@ import ifsul.ads.hackathon.domain.entity.Remedio;
 import ifsul.ads.hackathon.service.RemedioService;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,12 @@ public class RemedioController {
 		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<Remedio> remedios = remedioService.listarRemediosPorUsuario(subject);
 		return ResponseEntity.ok(remedios);
+	}
+
+	@GetMapping("/listar/{usuarioId}/{remedioId}")
+	public ResponseEntity<Remedio> obterRemedioPorId(@PathVariable String usuarioId, @PathVariable UUID remedioId) {
+		Remedio remedio = remedioService.obterRemedioPorId(usuarioId, remedioId);
+		return ResponseEntity.ok(remedio);
 	}
 
 	
