@@ -21,6 +21,7 @@ public class RemedioController {
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<String> cadastrarRemedio(@RequestBody RemedioCadastroDTO remedioDTO) {
+		System.out.println("RemedioDTO recebido: " + remedioDTO);
 		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		remedioService.cadastrarRemedio(remedioDTO, subject);
 		return ResponseEntity.ok("Remédio cadastrado com sucesso!");
@@ -33,9 +34,10 @@ public class RemedioController {
 		return ResponseEntity.ok(remedios);
 	}
 
-	@GetMapping("/listar/{usuarioId}/{remedioId}")
-	public ResponseEntity<Remedio> obterRemedioPorId(@PathVariable String usuarioId, @PathVariable UUID remedioId) {
-		Remedio remedio = remedioService.obterRemedioPorId(usuarioId, remedioId);
+	@GetMapping("/listar/{remedioId}")
+	public ResponseEntity<Remedio> obterRemedioPorId(@PathVariable UUID remedioId) {
+		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Remedio remedio = remedioService.obterRemedioPorId(subject, remedioId);
 		return ResponseEntity.ok(remedio);
 	}
 
