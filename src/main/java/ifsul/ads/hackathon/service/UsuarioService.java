@@ -1,58 +1,80 @@
 package ifsul.ads.hackathon.service;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 
 import ifsul.ads.hackathon.domain.entity.Usuario;
 import ifsul.ads.hackathon.repository.UsuarioRepository;
-import jakarta.validation.Valid;
 
 @Service
 public class UsuarioService {
-    
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void salvarUsuario(@Valid Usuario user) {
-        
-        if(usuarioRepository.existsByLogin(user.getLogin())) {
-            throw new IllegalArgumentException("Login já existe.");
-        }
+    @Value("${google.client.id}")
+    private String googleClientId;
 
-        if(user.getCelular() == null || user.getCelular().toString().length() != 11){
-            throw new IllegalArgumentException("Número de celular inválido.");
-        }
+    @Value("${google.client.secret}")
+    private String googleClientSecret;
 
-        if(user.getLogin() == null || user.getLogin().length() < 3) {
-            throw new IllegalArgumentException("Login não pode ser menor que 3 caracteres.");
-        }
+    public String login(String idTokenString) {
+        try {
 
-        if(user.getSenha() == null || user.getSenha().length() < 3) {
-            throw new IllegalArgumentException("Senha deve ter pelo menos 3 caracteres.");
-        }
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(),
+                    JacksonFactory.getDefaultInstance())
+                    .setAudience(Collections.singletonList(googleClientId))
+                    .build();
 
-        if(user.getNome() == null || user.getNome().isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio.");
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+
+            if (idToken == null) {
+                throw new IllegalArgumentException("Token de autenticação inválido.");
+            }
+
+            GoogleIdToken.Payload payload = idToken.getPayload();
+            String googleId = payload.getSubject();
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
+
+            createOrGetUser(googleId, email, name);
+
+            Algorithm algorithm = Algorithm.HMAC256(googleClientSecret);
+            String ownApiJwt = JWT.create()
+                    .withSubject(googleId)
+                    .withClaim("email", email)
+                    .withClaim("name", name)
+                    .withIssuedAt(new Date())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
+                    .sign(algorithm);
+
+            return ownApiJwt;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Erro ao processar a autenticação: " + e.getMessage());
         }
-        
-        Usuario usuario = new Usuario(
-            user.getId(),
-            user.getNome(),
-            user.getLogin(),
-            user.getSenha(),
-            user.getCelular().toString()
-        );
-        usuarioRepository.save(usuario);
     }
 
-    public Usuario obterUsuarioPorId(String usuarioId) {
-        return usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com ID: " + usuarioId));
+    private Usuario createOrGetUser(String googleId, String email, String name) {
+        return usuarioRepository.findByGoogleId(googleId).orElseGet(() -> {
+            return usuarioRepository.save(new Usuario(googleId, email, name));
+        });
     }
 
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
+    public Usuario getUserByGoogleId(String googleId) {
+        return usuarioRepository.findByGoogleId(googleId).orElseThrow();
     }
 }

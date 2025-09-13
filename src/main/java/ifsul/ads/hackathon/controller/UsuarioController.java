@@ -21,32 +21,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrarUsuario(@Valid @RequestBody Usuario usuarioDTO) {
-        System.out.println("Cadastrando usuário: " + usuarioDTO);
-        
-        try {
-            usuarioService.salvarUsuario(usuarioDTO);
-            System.out.println("Usuário cadastrado com sucesso!");
-            return ResponseEntity.ok("Usuário cadastrado com sucesso!");
-        } catch (Exception e) {
-            System.err.println("Erro ao cadastrar usuário: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Erro ao cadastrar usuário: " + e.getMessage());
-        }
+    @PostMapping("/auth")
+    public ResponseEntity<String> login(@RequestBody String idToken) {
+        String jwt = usuarioService.login(idToken);
+        return ResponseEntity.ok(jwt);
     }
-
-    @GetMapping("/listar")
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
-        System.out.println("Listando usuários...");
-
-        try {
-            List<Usuario> usuarios = usuarioService.listarUsuarios();
-            System.out.println("Usuários listados com sucesso!");
-            return ResponseEntity.ok(usuarios);
-        } catch (Exception e) {
-            System.err.println("Erro ao listar usuários: " + e.getMessage());
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
 }

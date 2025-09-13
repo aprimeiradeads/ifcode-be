@@ -23,7 +23,7 @@ public class RemedioService {
     private UsuarioService usuarioService;
 
     public void cadastrarRemedio(RemedioCadastroDTO remedioDTO, String usuarioId) {
-        
+
         Remedio remedio = new Remedio();
         UUID id = UUID.randomUUID();
         remedio.setId(id);
@@ -68,20 +68,20 @@ public class RemedioService {
 
         remedio.setRepeticaoSemana("");
 
-        Usuario usuario = usuarioService.obterUsuarioPorId(usuarioId);
+        Usuario usuario = usuarioService.getUserByGoogleId(usuarioId);
 
         remedio.setUsuario(usuario);
-        
+
         remedioRepository.save(remedio);
     }
 
-    public List<Remedio> listarRemediosPorUsuario(String usuarioId) {
-        return remedioRepository.findByUsuarioId(usuarioId);
+    public List<Remedio> listarRemediosPorUsuario(String googleId) {
+        return remedioRepository.findByUsuarioGoogleId(googleId);
     }
 
-    public Remedio obterRemedioPorId(String usuarioId,UUID remedioId) {
+    public Remedio obterRemedioPorId(String googleId, UUID remedioId) {
         return remedioRepository.findById(remedioId)
-                .filter(remedio -> remedio.getUsuario().getId().equals(usuarioId))
+                .filter(remedio -> remedio.getUsuario().getGoogleId().equals(googleId))
                 .orElseThrow(() -> new IllegalArgumentException("Remédio não encontrado com ID: " + remedioId));
     }
 
@@ -89,7 +89,5 @@ public class RemedioService {
         Remedio remedio = obterRemedioPorId(subject, remedioId);
         remedioRepository.delete(remedio);
     }
-
-    
 
 }
