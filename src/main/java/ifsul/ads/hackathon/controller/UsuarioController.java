@@ -1,10 +1,6 @@
 package ifsul.ads.hackathon.controller;
 
 import java.util.List;
-<<<<<<< HEAD
-=======
-import java.util.UUID;
->>>>>>> 6c400f78e2de9e49e1191146cb36fbf2213177a5
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
