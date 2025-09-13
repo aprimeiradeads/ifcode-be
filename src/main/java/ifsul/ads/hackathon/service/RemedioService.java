@@ -57,7 +57,7 @@ public class RemedioService {
                     DateTime dataFinal = new DateTime(System.currentTimeMillis() + (remedio.getDuracaoTempo() * 24L * 60L * 60L * 1000L));
                     remedio.setDuracaoDataFinal(dataFinal != null ? new java.sql.Date(dataFinal.getValue()) : null);
                     break;
-                case "ate":
+                case "data":
                     remedio.setDuracao(Duracao.ATE);
                     remedio.setDuracaoTempo(null);
                     // Tenta converter a data final
