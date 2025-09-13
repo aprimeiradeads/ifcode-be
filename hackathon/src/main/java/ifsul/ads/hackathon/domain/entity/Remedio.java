@@ -13,12 +13,14 @@ import jakarta.persistence.JoinColumn;
 import java.sql.Date;
 import java.util.UUID;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Encryption;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "remedios")
 public class Remedio {
 
@@ -49,43 +51,27 @@ public class Remedio {
     // diario -> mensal
     @Enumerated(EnumType.STRING)
     @Column(name = "repeticao")
-
     private Repeticao repeticao;
 
     // EX: A cada 2 dias
     @Column(name = "repeticao_dias")
-
     private int repeticaoDias;
 
     // Ex: segunda terca quarta
-    @Enumerated(EnumType.STRING)
     @Column(name = "repeticao_semana")
-
-    private Semana repeticaoSemana;
+    private String repeticaoSemana;
 
     // sempre - por x dias - ate x data
     @Enumerated(EnumType.STRING)
     @Column(name = "duracao")
-
     private Duracao duracao;
 
     // EX: por 5 dias
     @Column(name = "duracao_tempo")
-
     private Integer duracaoTempo;
 
     // EX: 19/09/25
     @Column(name = "duracao_data_final")
     private Date duracaoDataFinal;
-
-    public Remedio() {
-    }
-
-    public Remedio(String nome, String descricao, String fotoUrl) {
-        this.id = UUID.randomUUID();
-        this.nome = nome;
-        this.descricao = descricao;
-        this.fotoUrl = fotoUrl;
-    }
 
 }

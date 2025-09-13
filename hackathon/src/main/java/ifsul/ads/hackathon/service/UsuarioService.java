@@ -1,5 +1,7 @@
 package ifsul.ads.hackathon.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,11 @@ public class UsuarioService {
             usuarioDTO.celular().toString()
         );
         usuarioRepository.save(usuario);
+    }
+
+    public Usuario obterUsuarioPorId(UUID usuarioId) {
+        return usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com ID: " + usuarioId));
     }
 
 }
