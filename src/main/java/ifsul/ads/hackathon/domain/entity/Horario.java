@@ -3,6 +3,8 @@ package ifsul.ads.hackathon.domain.entity;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -25,6 +28,8 @@ public class Horario {
 
     @ManyToOne
     @JoinColumn(name = "remedio_id", nullable = false)
+    @ToString.Exclude
+    @JsonBackReference
     private Remedio remedio;
 
     public Horario(Remedio remedio, LocalTime hora) {

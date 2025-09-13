@@ -7,16 +7,21 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -76,5 +81,10 @@ public class Remedio {
     // EX: 19/09/25
     @Column(name = "duracao_data_final")
     private Date duracaoDataFinal;
+
+    @OneToMany(mappedBy = "remedio")
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Horario> horarios;
 
 }

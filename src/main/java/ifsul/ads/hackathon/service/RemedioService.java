@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ifsul.ads.hackathon.domain.dto.RemedioCadastroDTO;
 import ifsul.ads.hackathon.domain.entity.Duracao;
+import ifsul.ads.hackathon.domain.entity.Horario;
 import ifsul.ads.hackathon.domain.entity.Remedio;
 import ifsul.ads.hackathon.domain.entity.Repeticao;
 import ifsul.ads.hackathon.domain.entity.Usuario;
@@ -21,6 +22,9 @@ public class RemedioService {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private HorarioService horarioService;
 
     public void cadastrarRemedio(RemedioCadastroDTO remedioDTO, String usuarioId) {
         Remedio remedio = new Remedio();
@@ -116,6 +120,10 @@ public class RemedioService {
         Usuario usuario = usuarioService.getUserByGoogleId(usuarioId);
         remedio.setUsuario(usuario);
         remedioRepository.save(remedio);
+
+        remedio.setHorarios(cadastrarHorarios(remedioDTO.getHorario(), remedio.getId()));
+        remedioRepository.save(remedio);
+
         System.out.println("-> Remédio cadastrado com sucesso! -> {" + remedio + "}");
     }
 
@@ -135,6 +143,12 @@ public class RemedioService {
         Remedio remedio = obterRemedioPorId(remedioId);
         System.out.println("-> Deletando remédio: " + remedio);
         remedioRepository.delete(remedio);
+    }
+
+    private List<Horario> cadastrarHorarios(List<String> horariosStr, UUID remedioId) {
+        return horariosStr.stream().map(horarioStr -> {
+            return horarioService.cadastrarHorario(remedioRepository.getById(remedioId), horarioStr);
+        }).toList();
     }
 
 }

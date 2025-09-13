@@ -1,5 +1,7 @@
 package ifsul.ads.hackathon.domain.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,7 @@ public class RemedioCadastroDTO {
 	private String repeticaoSemana;
 	private String duracaoDataFinal;
 	private String fotoUrl;
+	private List<String> horario;
 
 	// Construtor padrão para desserialização
 	public RemedioCadastroDTO() {
