@@ -40,8 +40,7 @@ public class RemedioController {
 	@GetMapping("/listar/{remedioId}")
 	public ResponseEntity<Remedio> obterRemedioPorId(@PathVariable UUID remedioId) {
 		System.out.println("-> Iniciando obtenção de remédio por ID");
-		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Remedio remedio = remedioService.obterRemedioPorId(subject, remedioId);
+		Remedio remedio = remedioService.obterRemedioPorId(remedioId);
 		System.out.println("-> Obtenção de remédio por ID concluída com sucesso! -> {" + remedio + "}");
 		return ResponseEntity.ok(remedio);
 	}
@@ -49,8 +48,7 @@ public class RemedioController {
 	@DeleteMapping("/{remedioId}")
 	public ResponseEntity<String> deletarRemedio(@PathVariable UUID remedioId) {
 		System.out.println("-> Iniciando deleção de remédio");
-		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		remedioService.deletarRemedio(subject, remedioId);
+		remedioService.deletarRemedio(remedioId);
 		System.out.println("-> Deleção de remédio concluída com sucesso!");
 		return ResponseEntity.ok("Remédio deletado com sucesso!");
 	}

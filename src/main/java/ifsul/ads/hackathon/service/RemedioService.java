@@ -83,14 +83,13 @@ public class RemedioService {
         return remedios;
     }
 
-    public Remedio obterRemedioPorId(String googleId, UUID remedioId) {
+    public Remedio obterRemedioPorId(UUID remedioId) {
         return remedioRepository.findById(remedioId)
-                .filter(remedio -> remedio.getUsuario().getGoogleId().equals(googleId))
                 .orElseThrow(() -> new IllegalArgumentException("Remédio não encontrado com ID: " + remedioId));
     }
 
-    public void deletarRemedio(String subject, UUID remedioId) {
-        Remedio remedio = obterRemedioPorId(subject, remedioId);
+    public void deletarRemedio(UUID remedioId) {
+        Remedio remedio = obterRemedioPorId(remedioId);
         System.out.println("-> Deletando remédio: " + remedio);
         remedioRepository.delete(remedio);
     }
