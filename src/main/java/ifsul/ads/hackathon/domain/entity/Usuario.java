@@ -1,6 +1,5 @@
 package ifsul.ads.hackathon.domain.entity;
 
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Usuario {
     
     @Id
-    private UUID id;
+    private String id;
 
     @Column(nullable = false)
     @Size(min = 3, message = "O nome deve ter pelo menos 3 caracteres")
@@ -36,8 +35,8 @@ public class Usuario {
     
     private String celular;
 
-    public Usuario(String nome, String login, String senha, String celular) {
-        this.id = UUID.randomUUID();
+    public Usuario(String id, String nome, String login, String senha, String celular) {
+        this.id = id;
         this.nome = nome;
         this.login = login;
         this.senha = senha;

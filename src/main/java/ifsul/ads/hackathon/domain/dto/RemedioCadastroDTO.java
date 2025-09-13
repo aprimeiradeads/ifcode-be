@@ -1,6 +1,5 @@
 package ifsul.ads.hackathon.domain.dto;
 
-import java.util.UUID;
 
 public record RemedioCadastroDTO(
 	String nome,
@@ -13,6 +12,6 @@ public record RemedioCadastroDTO(
 	String duracao,
 	Integer duracaoTempo,
 	String duracaoDataFinal,
-	UUID usuarioId
+	String usuarioId
 ) {
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ifsul.ads.hackathon.domain.dto.UsuarioCadastroDTO;
 import ifsul.ads.hackathon.domain.entity.Usuario;
 import ifsul.ads.hackathon.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -23,7 +22,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrarUsuario(@Valid @RequestBody UsuarioCadastroDTO usuarioDTO) {
+    public ResponseEntity<String> cadastrarUsuario(@Valid @RequestBody Usuario usuarioDTO) {
         System.out.println("Cadastrando usuário: " + usuarioDTO);
         
         try {

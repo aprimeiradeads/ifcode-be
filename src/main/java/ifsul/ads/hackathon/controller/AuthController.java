@@ -7,7 +7,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
-import ifsul.ads.hackathon.domain.dto.UsuarioCadastroDTO;
+import ifsul.ads.hackathon.domain.entity.Usuario;
 import ifsul.ads.hackathon.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +69,15 @@ public class AuthController {
                     .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
                     .sign(algorithm);
 
-            UsuarioCadastroDTO userDto = new UsuarioCadastroDTO(name, email, "defaultPassword", 00000000000L);
-            usuarioService.salvarUsuario(userDto);
+                    Usuario user = new Usuario();
+                    user.setId(googleId);
+                    user.setLogin(email);
+                    user.setNome(name);
+                    user.setCelular("00000000000");
+                    user.setSenha("Nullable");
+
+                    usuarioService.salvarUsuario(user);
+            
             return ResponseEntity.ok(Collections.singletonMap("token", yourApiJwt));
 
         } catch (GeneralSecurityException | IOException e) {

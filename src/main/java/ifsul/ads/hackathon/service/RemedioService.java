@@ -58,7 +58,7 @@ public class RemedioService {
         remedioRepository.save(remedio);
     }
 
-    public List<Remedio> listarRemediosPorUsuario(UUID usuarioId) {
+    public List<Remedio> listarRemediosPorUsuario(String usuarioId) {
         return remedioRepository.findByUsuarioId(usuarioId);
     }
 

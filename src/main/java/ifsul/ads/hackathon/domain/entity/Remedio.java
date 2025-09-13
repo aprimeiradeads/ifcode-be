@@ -44,6 +44,7 @@ public class Remedio {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+
     // Ex 50mg
     @Column(name = "dosagem")
     private String dosagem;

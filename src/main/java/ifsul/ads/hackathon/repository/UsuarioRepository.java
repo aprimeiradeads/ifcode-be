@@ -9,7 +9,7 @@ import ifsul.ads.hackathon.domain.entity.Usuario;
 
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
+public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     boolean existsByLogin(String login);
     
