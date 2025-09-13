@@ -3,8 +3,8 @@ package ifsul.ads.hackathon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ifsul.ads.hackathon.domain.Usuario;
 import ifsul.ads.hackathon.domain.dto.UsuarioCadastroDTO;
+import ifsul.ads.hackathon.domain.entity.Usuario;
 import ifsul.ads.hackathon.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 
