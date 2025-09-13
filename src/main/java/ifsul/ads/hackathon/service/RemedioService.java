@@ -73,10 +73,14 @@ public class RemedioService {
         remedio.setUsuario(usuario);
 
         remedioRepository.save(remedio);
+
+        System.out.println("-> Remédio cadastrado com sucesso! -> {" + remedio + "}");
     }
 
     public List<Remedio> listarRemediosPorUsuario(String googleId) {
-        return remedioRepository.findByUsuarioGoogleId(googleId);
+        List<Remedio> remedios = remedioRepository.findByUsuarioGoogleId(googleId);
+        System.out.println("-> Encontrados " + remedios.size() + " remédios para o usuário com Google ID: " + googleId + "}");
+        return remedios;
     }
 
     public Remedio obterRemedioPorId(String googleId, UUID remedioId) {
@@ -87,6 +91,7 @@ public class RemedioService {
 
     public void deletarRemedio(String subject, UUID remedioId) {
         Remedio remedio = obterRemedioPorId(subject, remedioId);
+        System.out.println("-> Deletando remédio: " + remedio);
         remedioRepository.delete(remedio);
     }
 
