@@ -10,9 +10,7 @@ import ifsul.ads.hackathon.domain.entity.Remedio;
 
 @Repository
 public interface RemedioRepository extends JpaRepository<Remedio, UUID> {
+
+    List<Remedio> findByUsuarioGoogleId(String usuarioGoogleId);
     
-    List<Remedio> findByUsuarioId(String usuarioId);
-
-    List<Remedio> findByUsuarioLogin(String email);
-
 }

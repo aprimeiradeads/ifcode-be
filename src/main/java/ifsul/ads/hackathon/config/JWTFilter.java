@@ -19,7 +19,7 @@ import java.util.Collections;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.secret}")
+    @Value("${google.client.secret}")
     private String jwtSecret;
 
     @Override
