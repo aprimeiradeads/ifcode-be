@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.api.client.util.DateTime;
+
 import ifsul.ads.hackathon.domain.dto.RemedioCadastroDTO;
 import ifsul.ads.hackathon.domain.entity.Duracao;
 import ifsul.ads.hackathon.domain.entity.Remedio;
@@ -40,23 +42,21 @@ public class RemedioService {
                     remedio.setDuracaoDataFinal(null);
                     break;
                 case "quantidade":
-                case "por":
                     remedio.setDuracao(Duracao.POR);
-                    // Tenta pegar o campo duracaoTempo do DTO
+                    // Tenta converter a duração em tempo (dias, semanas, meses)
                     try {
-                        String tempoStr = remedioDTO.getDuracaoDataFinal(); // campo não existe, mas pode vir como
-                                                                            // string
-                        Integer tempo = null;
-                        if (tempoStr != null && !tempoStr.isEmpty()) {
-                            tempo = Integer.parseInt(tempoStr);
+                        Integer duracao = remedioDTO.getDuracaoTempo(); 
+                        int duracaoTempo = 0;
+                        if (duracao != null) {
+                            duracaoTempo = duracao;
                         }
-                        remedio.setDuracaoTempo(tempo);
+                        remedio.setDuracaoTempo(duracaoTempo);
                     } catch (Exception e) {
-                        remedio.setDuracaoTempo(null);
+                        remedio.setDuracaoTempo(0);
                     }
-                    remedio.setDuracaoDataFinal(null);
+                    DateTime dataFinal = new DateTime(System.currentTimeMillis() + (remedio.getDuracaoTempo() * 24L * 60L * 60L * 1000L));
+                    remedio.setDuracaoDataFinal(dataFinal != null ? new java.sql.Date(dataFinal.getValue()) : null);
                     break;
-                case "data":
                 case "ate":
                     remedio.setDuracao(Duracao.ATE);
                     remedio.setDuracaoTempo(null);
