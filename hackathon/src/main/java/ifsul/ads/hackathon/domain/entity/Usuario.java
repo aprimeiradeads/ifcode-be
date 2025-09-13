@@ -1,4 +1,4 @@
-package ifsul.ads.hackathon.domain;
+package ifsul.ads.hackathon.domain.entity;
 
 import java.util.UUID;
 
