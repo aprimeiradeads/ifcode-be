@@ -44,7 +44,7 @@ public class SecurityConfig {
         // Apenas a sua origem do front-end é permitida
         configuration.setAllowedOrigins(Arrays.asList("https://ifcode-fe.vercel.app"));
         // Permite os métodos POST e OPTIONS
-        configuration.setAllowedMethods(Arrays.asList("POST", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
 
