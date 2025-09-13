@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ifsul.ads.hackathon.domain.dto.RemedioCadastroDTO;
+import ifsul.ads.hackathon.domain.entity.Duracao;
 import ifsul.ads.hackathon.domain.entity.Remedio;
 import ifsul.ads.hackathon.domain.entity.Repeticao;
 import ifsul.ads.hackathon.domain.entity.Usuario;
@@ -30,6 +31,22 @@ public class RemedioService {
         remedio.setDescricao(remedioDTO.getDescricao());
         remedio.setFotoUrl("");
         remedio.setDosagem(remedioDTO.getDosagem());
+
+        String strDuracao = remedioDTO.getDuracao();
+
+        switch (strDuracao.toLowerCase()) {
+            case "sempre":
+                remedio.setDuracao(Duracao.SEMPRE);
+                break;
+            case "por":
+                remedio.setDuracao(Duracao.POR);
+                break;
+            case "ate":
+                remedio.setDuracao(Duracao.ATE);
+                break;
+            default:
+                throw new IllegalArgumentException("Valor de duração inválido: " + strDuracao);
+        }
 
         String strRepeticao = remedioDTO.getRepeticao();
 
