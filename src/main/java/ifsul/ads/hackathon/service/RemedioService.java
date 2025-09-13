@@ -1,5 +1,6 @@
 package ifsul.ads.hackathon.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class RemedioService {
         remedio.setUsuario(usuario);
         
         remedioRepository.save(remedio);
+    }
+
+    public List<Remedio> listarRemedios() {
+        return remedioRepository.findAll();
     }
 
     
