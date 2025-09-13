@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ifsul.ads.hackathon.domain.Usuario;
 import ifsul.ads.hackathon.domain.dto.UsuarioCadastroDTO;
 import ifsul.ads.hackathon.repository.UsuarioRepository;
+import jakarta.validation.Valid;
 
 @Service
 public class UsuarioService {
@@ -13,10 +14,26 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void salvarUsuario(UsuarioCadastroDTO usuarioDTO) {
+    public void salvarUsuario(@Valid UsuarioCadastroDTO usuarioDTO) {
         
         if(usuarioRepository.existsByLogin(usuarioDTO.login())) {
             throw new IllegalArgumentException("Login já existe.");
+        }
+
+        if(usuarioDTO.celular() == null || usuarioDTO.celular().toString().length() != 11){
+            throw new IllegalArgumentException("Número de celular inválido.");
+        }
+
+        if(usuarioDTO.login() == null || usuarioDTO.login().length() < 3) {
+            throw new IllegalArgumentException("Login não pode ser menor que 3 caracteres.");
+        }
+
+        if(usuarioDTO.senha() == null || usuarioDTO.senha().length() < 3) {
+            throw new IllegalArgumentException("Senha deve ter pelo menos 3 caracteres.");
+        }
+
+        if(usuarioDTO.nome() == null || usuarioDTO.nome().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser vazio.");
         }
         
         Usuario usuario = new Usuario(

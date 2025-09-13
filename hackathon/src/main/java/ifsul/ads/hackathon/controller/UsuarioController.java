@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ifsul.ads.hackathon.domain.dto.UsuarioCadastroDTO;
 import ifsul.ads.hackathon.service.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -18,7 +19,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody UsuarioCadastroDTO usuarioDTO) {
+    public ResponseEntity<String> cadastrarUsuario(@Valid @RequestBody UsuarioCadastroDTO usuarioDTO) {
         System.out.println("Cadastrando usuário: " + usuarioDTO);
         
         try {
