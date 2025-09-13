@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -82,7 +83,7 @@ public class Remedio {
     @Column(name = "duracao_data_final")
     private Date duracaoDataFinal;
 
-    @OneToMany(mappedBy = "remedio")
+    @OneToMany(mappedBy = "remedio", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Horario> horarios;
