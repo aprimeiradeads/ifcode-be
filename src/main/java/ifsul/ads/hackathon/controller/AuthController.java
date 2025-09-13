@@ -69,7 +69,7 @@ public class AuthController {
                     .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
                     .sign(algorithm);
 
-            UsuarioCadastroDTO userDto = new UsuarioCadastroDTO(name, email, "defaultPassword", 0L);
+            UsuarioCadastroDTO userDto = new UsuarioCadastroDTO(name, email, "defaultPassword", 00000000000L);
             usuarioService.salvarUsuario(userDto);
             return ResponseEntity.ok(Collections.singletonMap("token", yourApiJwt));
 
