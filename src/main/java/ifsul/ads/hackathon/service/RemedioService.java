@@ -26,12 +26,12 @@ public class RemedioService {
         Remedio remedio = new Remedio();
         UUID id = UUID.randomUUID();
         remedio.setId(id);
-        remedio.setNome(remedioDTO.nome());
-        remedio.setDescricao(remedioDTO.descricao());
-        remedio.setFotoUrl(remedioDTO.fotoUrl());
-        remedio.setDosagem(remedioDTO.dosagem());
+        remedio.setNome(remedioDTO.getNome());
+        remedio.setDescricao(remedioDTO.getDescricao());
+        remedio.setFotoUrl("");
+        remedio.setDosagem(remedioDTO.getDosagem());
 
-        String strRepeticao = remedioDTO.repeticao();
+        String strRepeticao = remedioDTO.getRepeticao();
 
         switch (strRepeticao.toLowerCase()) {
             case "diario":
@@ -47,13 +47,11 @@ public class RemedioService {
                 throw new IllegalArgumentException("Valor de repetição inválido: " + strRepeticao);
         }
 
-        remedio.setRepeticaoDias(remedioDTO.repeticaoDias());
+        remedio.setRepeticaoDias(0);
 
-        remedio.setRepeticaoSemana(remedioDTO.repeticaoSemana());
+        remedio.setRepeticaoSemana("");
 
-        Usuario usuario = usuarioService.obterUsuarioPorId(remedioDTO.usuarioId());
-
-        remedio.setUsuario(usuario);
+        remedio.setUsuario(remedioDTO.getUsuario());
         
         remedioRepository.save(remedio);
     }
