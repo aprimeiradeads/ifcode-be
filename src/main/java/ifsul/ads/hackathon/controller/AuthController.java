@@ -6,6 +6,11 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+
+import ifsul.ads.hackathon.domain.dto.UsuarioCadastroDTO;
+import ifsul.ads.hackathon.service.UsuarioService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +30,9 @@ public class AuthController {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping("/api/auth/google")
     public ResponseEntity<?> authenticateGoogleUser(@RequestBody String idTokenString) {
@@ -61,6 +69,8 @@ public class AuthController {
                     .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
                     .sign(algorithm);
 
+            UsuarioCadastroDTO userDto = new UsuarioCadastroDTO(name, email, "defaultPassword", 0L);
+            usuarioService.salvarUsuario(userDto);
             return ResponseEntity.ok(Collections.singletonMap("token", yourApiJwt));
 
         } catch (GeneralSecurityException | IOException e) {
