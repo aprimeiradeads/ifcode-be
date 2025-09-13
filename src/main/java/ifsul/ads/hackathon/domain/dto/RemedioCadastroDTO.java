@@ -16,6 +16,7 @@ public class RemedioCadastroDTO {
 	private String duracaoDataFinal;
 	private String fotoUrl;
 	private List<String> horario;
+	private Integer duracaoTempo;
 
 	// Construtor padrão para desserialização
 	public RemedioCadastroDTO() {
@@ -32,7 +33,7 @@ public class RemedioCadastroDTO {
 		this.repeticaoSemana = repeticaoSemana;
 		this.duracao = duracao;
 		this.duracaoDataFinal = duracaoDataFinal;
-		// duracaoTempo não é campo da classe, mas pode ser usado para lógica futura
+		this.duracaoTempo = duracaoTempo;
 	}
 
 	// Caso 2: mensal, duracao data
