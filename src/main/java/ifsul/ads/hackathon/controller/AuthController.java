@@ -85,7 +85,11 @@ public class AuthController {
             user.setSenha("Nullable");
 
             if (!usuarioRepository.existsByLogin(email)) {
-                usuarioService.salvarUsuario(user);
+                try {
+                    usuarioService.salvarUsuario(user);
+                } catch (Exception e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+                }
             } else {
                 System.out.println("Usuário já existe no banco de dados.");
             }
