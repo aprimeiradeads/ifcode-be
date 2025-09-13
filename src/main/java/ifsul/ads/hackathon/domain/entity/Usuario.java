@@ -30,7 +30,7 @@ public class Usuario {
     @Size(min = 3, message = "A senha deve ter pelo menos 3 caracteres")
     private String senha;
 
-    @Column(nullable = true, unique = true, length = 11)
+    @Column(nullable = true, unique = false, length = 11)
     @Size(min = 11, max = 11, message = "O celular deve ter 11 caracteres")
     
     private String celular;
