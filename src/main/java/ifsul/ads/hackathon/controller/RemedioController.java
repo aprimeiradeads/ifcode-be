@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +24,10 @@ public class RemedioController {
 		return ResponseEntity.ok("Remédio cadastrado com sucesso!");
 	}
 
-	@GetMapping("/listar/{usuarioId}")
-	public ResponseEntity<List<Remedio>> listarRemediosPorUsuario(@PathVariable String usuarioId) {
-		List<Remedio> remedios = remedioService.listarRemediosPorUsuario(usuarioId);
+	@GetMapping("/listar")
+	public ResponseEntity<List<Remedio>> listarRemediosPorUsuario() {
+		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Remedio> remedios = remedioService.listarRemediosPorUsuario(subject);
 		return ResponseEntity.ok(remedios);
 	}
 

@@ -33,10 +33,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
             try {
                 Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
-                String userEmail = JWT.require(algorithm).build().verify(token).getClaim("email").asString();
+                String subject = JWT.require(algorithm).build().verify(token).getSubject();
 
                 // Cria um objeto de autenticação para o Spring Security
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userEmail, null, Collections.emptyList());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(subject, null, Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (JWTVerificationException exception) {
