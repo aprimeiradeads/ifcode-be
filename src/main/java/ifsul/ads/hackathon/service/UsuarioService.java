@@ -52,4 +52,7 @@ public class UsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com ID: " + usuarioId));
     }
 
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
+    }
 }

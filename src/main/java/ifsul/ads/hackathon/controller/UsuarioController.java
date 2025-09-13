@@ -32,4 +32,18 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/listar")
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        System.out.println("Listando usuários...");
+
+        try {
+            List<Usuario> usuarios = usuarioService.listarUsuarios();
+            System.out.println("Usuários listados com sucesso!");
+            return ResponseEntity.ok(usuarios);
+        } catch (Exception e) {
+            System.err.println("Erro ao listar usuários: " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
 }
