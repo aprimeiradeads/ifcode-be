@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class Remedio {
     private String descricao;
 
     // imgur
+    @Lob
     @Column(name = "foto_url")
     private String fotoUrl;
 

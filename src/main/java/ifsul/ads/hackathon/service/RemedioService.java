@@ -29,7 +29,7 @@ public class RemedioService {
         remedio.setId(id);
         remedio.setNome(remedioDTO.getNome());
         remedio.setDescricao(remedioDTO.getDescricao());
-        remedio.setFotoUrl("");
+        remedio.setFotoUrl(remedioDTO.getFotoBase64());
         remedio.setDosagem(remedioDTO.getDosagem());
 
         String strDuracao = remedioDTO.getDuracao();
