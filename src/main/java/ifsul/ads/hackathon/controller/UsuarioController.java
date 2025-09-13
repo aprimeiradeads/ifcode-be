@@ -15,7 +15,7 @@ import ifsul.ads.hackathon.service.UsuarioService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/users")
 public class UsuarioController {
 
     @Autowired

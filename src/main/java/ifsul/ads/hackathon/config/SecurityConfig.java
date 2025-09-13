@@ -29,11 +29,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
                         // Libera o endpoint de login para qualquer requisição
-                        .requestMatchers("/auth").permitAll()
+                        //.requestMatchers("/auth").permitAll()
                         // Garante que todas as outras rotas exigem autenticação
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        ;
+                        .anyRequest().permitAll())
+                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                ;
 
         return http.build();
     }
