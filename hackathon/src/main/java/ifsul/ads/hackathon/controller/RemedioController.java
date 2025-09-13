@@ -14,9 +14,9 @@ public class RemedioController {
 	@Autowired
 	private RemedioService remedioService;
 
-	@PostMapping("/cadastrar")
-	public ResponseEntity<Remedio> cadastrarRemedio(@RequestBody RemedioCadastroDTO remedioDTO) {
-		return ResponseEntity.ok();
-	}
+	//@PostMapping("/cadastrar")
+//	public ResponseEntity<Remedio> cadastrarRemedio(@RequestBody RemedioCadastroDTO remedioDTO) {
+	//	return ResponseEntity.ok();
+	//}
 
 }

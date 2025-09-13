@@ -1,5 +1,6 @@
 package ifsul.ads.hackathon.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,11 +11,6 @@ import ifsul.ads.hackathon.domain.entity.Remedio;
 @Repository
 public interface RemedioRepository extends JpaRepository<Remedio, UUID> {
     
-    Remedio findByNomeComercial(String nomeComercial);
+    List<Remedio> findByUsuarioId(UUID usuarioId);
 
-    Remedio findByNomeApelido(String nomeApelido);
-    
-    Remedio findByDescricao(String descricao);
-    
-    
 }

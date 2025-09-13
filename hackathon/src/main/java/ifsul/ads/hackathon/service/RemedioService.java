@@ -14,4 +14,6 @@ public class RemedioService {
     @Autowired
     private RemedioRepository remedioRepository;
 
+    
+
 }
