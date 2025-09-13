@@ -58,8 +58,8 @@ public class RemedioService {
         remedioRepository.save(remedio);
     }
 
-    public List<Remedio> listarRemedios() {
-        return remedioRepository.findAll();
+    public List<Remedio> listarRemediosPorUsuario(UUID usuarioId) {
+        return remedioRepository.findByUsuarioId(usuarioId);
     }
 
     
