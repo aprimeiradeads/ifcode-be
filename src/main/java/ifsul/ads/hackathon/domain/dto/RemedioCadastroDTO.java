@@ -10,6 +10,8 @@ public class RemedioCadastroDTO {
 	private String repeticao;
 	private String dosagem;
 	private String duracao;
+	private String repeticaoSemana;
+	private String duracaoDataFinal;
 
 	// Construtor padrão para desserialização
 	public RemedioCadastroDTO() {
@@ -21,6 +23,17 @@ public class RemedioCadastroDTO {
 		this.repeticao = repeticao;
 		this.dosagem = dosagem;
 		this.duracao = duracao;
+	}
+
+	public RemedioCadastroDTO(String nome, String descricao, String dosagem, String repeticao, String repeticaoSemana,
+			String duracao, String duracaoDataFinal) {
+		this.nome = nome;
+		this.descricao = descricao;
+		this.dosagem = dosagem;
+		this.repeticao = repeticao;
+		this.repeticaoSemana = repeticaoSemana;
+		this.duracao = duracao;
+		this.duracaoDataFinal = duracaoDataFinal;
 	}
 
 }
