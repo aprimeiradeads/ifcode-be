@@ -1,6 +1,7 @@
 package ifsul.ads.hackathon.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import ifsul.ads.hackathon.domain.entity.Remedio;
 import ifsul.ads.hackathon.domain.entity.Repeticao;
 import ifsul.ads.hackathon.domain.entity.Usuario;
 import ifsul.ads.hackathon.repository.RemedioRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class RemedioService {
@@ -49,7 +51,7 @@ public class RemedioService {
                     remedio.setDuracao(Duracao.POR);
                     // Tenta converter a duração em tempo (dias, semanas, meses)
                     try {
-                        Integer duracao = remedioDTO.getDuracaoTempo(); 
+                        Integer duracao = remedioDTO.getDuracaoTempo();
                         int duracaoTempo = 0;
                         if (duracao != null) {
                             duracaoTempo = duracao;
@@ -58,7 +60,8 @@ public class RemedioService {
                     } catch (Exception e) {
                         remedio.setDuracaoTempo(0);
                     }
-                    DateTime dataFinal = new DateTime(System.currentTimeMillis() + (remedio.getDuracaoTempo() * 24L * 60L * 60L * 1000L));
+                    DateTime dataFinal = new DateTime(
+                            System.currentTimeMillis() + (remedio.getDuracaoTempo() * 24L * 60L * 60L * 1000L));
                     remedio.setDuracaoDataFinal(dataFinal != null ? new java.sql.Date(dataFinal.getValue()) : null);
                     break;
                 case "data":
@@ -139,10 +142,32 @@ public class RemedioService {
                 .orElseThrow(() -> new IllegalArgumentException("Remédio não encontrado com ID: " + remedioId));
     }
 
+    @Transactional
     public void deletarRemedio(UUID remedioId) {
         Remedio remedio = obterRemedioPorId(remedioId);
         System.out.println("-> Deletando remédio: " + remedio);
         remedioRepository.delete(remedio);
+    }
+
+    @Transactional
+    public void removerHorarioDoRemedio(UUID remedioId, UUID horarioId) {
+        Optional<Remedio> remedioOptional = remedioRepository.findById(remedioId);
+
+        if (remedioOptional.isPresent()) {
+            Remedio remedio = remedioOptional.get();
+
+            // Remove o horário da lista do remédio
+            boolean removed = remedio.getHorarios().removeIf(horario -> horario.getId().equals(horarioId));
+
+            if (removed) {
+                // Ao salvar o remédio pai, o `orphanRemoval` irá deletar o horário órfão.
+                remedioRepository.save(remedio);
+            } else {
+                throw new IllegalArgumentException("Horário não encontrado para este remédio.");
+            }
+        } else {
+            throw new IllegalArgumentException("Remédio não encontrado com o ID: " + remedioId);
+        }
     }
 
     private List<Horario> cadastrarHorarios(List<String> horariosStr, UUID remedioId) {
