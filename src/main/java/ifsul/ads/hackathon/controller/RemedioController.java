@@ -21,7 +21,8 @@ public class RemedioController {
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<String> cadastrarRemedio(@RequestBody RemedioCadastroDTO remedioDTO) {
-		remedioService.cadastrarRemedio(remedioDTO);
+		String subject = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		remedioService.cadastrarRemedio(remedioDTO, subject);
 		return ResponseEntity.ok("Remédio cadastrado com sucesso!");
 	}
 

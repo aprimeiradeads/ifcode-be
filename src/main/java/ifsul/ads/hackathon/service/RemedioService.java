@@ -21,7 +21,7 @@ public class RemedioService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public void cadastrarRemedio(RemedioCadastroDTO remedioDTO) {
+    public void cadastrarRemedio(RemedioCadastroDTO remedioDTO, String usuarioId) {
         
         Remedio remedio = new Remedio();
         UUID id = UUID.randomUUID();
@@ -51,7 +51,9 @@ public class RemedioService {
 
         remedio.setRepeticaoSemana("");
 
-        remedio.setUsuario(remedioDTO.getUsuario());
+        Usuario usuario = usuarioService.obterUsuarioPorId(usuarioId);
+
+        remedio.setUsuario(usuario);
         
         remedioRepository.save(remedio);
     }
